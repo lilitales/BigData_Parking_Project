@@ -42,11 +42,13 @@ class Auth():
         if self.cached_datetime is None:
             self.cached_datetime = datetime.now()
             self.access_token = self._get_access_token()
+            print('取得新token')
         else:
             time_diff = datetime.now() - self.cached_datetime
             past_hour = time_diff.total_seconds() / 3600
             if past_hour > 6:
                 self.access_token = self._get_access_token()
+                print('超過6小時，取得新token')
 
         resObj = {
             'authorization': 'Bearer ' + self.access_token,

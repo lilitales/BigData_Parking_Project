@@ -4,9 +4,14 @@ import schedule
 import time
 import fetch_TDX as tdx
 
+exec_count = 1
+
 
 def fetch_TDX_task():
+    global exec_count
     tdx.main()
+    print(f'執行第{exec_count}次')
+    exec_count += 1
 
 
 def setup_schedule():
@@ -23,12 +28,11 @@ def setup_schedule():
 
 def run_scheduler():
     setup_schedule()
-    count = 1
+
+    schedule.run_all(delay_seconds=5)
     while True:
         # 運行所有可運行的任務
         schedule.run_pending()
-        print(f'執行第{count}次')
-        count += 1
         # 暫停一定時間後再檢查，減少電腦資源使用
         time.sleep(60)
 
