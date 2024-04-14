@@ -23,9 +23,12 @@ def setup_schedule():
 
 def run_scheduler():
     setup_schedule()
+    count = 1
     while True:
         # 運行所有可運行的任務
         schedule.run_pending()
+        print(f'執行第{count}次')
+        count += 1
         # 暫停一定時間後再檢查，減少電腦資源使用
         time.sleep(60)
 
