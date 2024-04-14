@@ -48,6 +48,8 @@ class Auth():
             past_hour = time_diff.total_seconds() / 3600
             if past_hour > 6:
                 self.access_token = self._get_access_token()
+                # 更新比對時間
+                self.cached_datetime = datetime.now()
                 print('超過6小時，取得新token')
 
         resObj = {
