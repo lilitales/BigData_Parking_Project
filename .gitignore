@@ -178,3 +178,6 @@ pyrightconfig.json
 
 #TDX個人資料
 secret.json
+
+#log檔資夾
+log

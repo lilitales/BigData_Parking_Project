@@ -3,6 +3,8 @@ from auth import Auth
 import requests
 import json
 import urllib.parse as parse
+from pathlib import Path
+from datetime import datetime
 
 
 class DataAccess():
@@ -10,8 +12,33 @@ class DataAccess():
         self.data_header = Auth().get_data_header()
 
     def get_data_response(self, url):
-        data_response = requests.get(url, headers=self.data_header)
+        data_response = self._send_request(url)
         return json.loads(data_response.text)
+
+    def _send_request(self, url):
+        response = requests.get(url, headers=self.data_header)
+        if response.status_code == 200:
+            return response
+        # 非預期情況
+        else:
+            log_root = Path('./log')
+            log_root.mkdir(exist_ok=True)
+
+            # 寫log檔
+            res = {
+                'status_code': response.status_code,
+                'reason': response.reason,
+                'text': response.json()
+            }
+            dateFormat = r"%Y-%m-%dT%H-%M-%S%z"
+            nowStr = datetime.strftime(datetime.now(), dateFormat)
+            jsonStr = json.dumps(res)
+            log_file = log_root / Path(f'{nowStr}_errLog.txt')
+            log_file.write_text(jsonStr)
+            print(f'{nowStr} send request發生error')
+
+            raise ValueError(
+                f"send request發生error，log path: {log_file.resolve()}")
 
     def _build_query_params(self, select=None, filter=None):
         '''
