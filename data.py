@@ -9,14 +9,15 @@ from datetime import datetime
 
 class DataAccess():
     def __init__(self) -> None:
-        self.data_header = Auth().get_data_header()
+        self.auth_singleton = Auth()
 
     def get_data_response(self, url):
         data_response = self._send_request(url)
         return json.loads(data_response.text)
 
     def _send_request(self, url):
-        response = requests.get(url, headers=self.data_header)
+        authObj = self.auth_singleton
+        response = requests.get(url, headers=authObj.get_data_header())
         if response.status_code == 200:
             return response
         # 非預期情況
@@ -28,7 +29,7 @@ class DataAccess():
             res = {
                 'status_code': response.status_code,
                 'reason': response.reason,
-                'text': response.json()
+                'text': response.text
             }
             dateFormat = r"%Y-%m-%dT%H-%M-%S%z"
             nowStr = datetime.strftime(datetime.now(), dateFormat)

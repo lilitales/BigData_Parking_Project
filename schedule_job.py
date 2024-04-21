@@ -10,7 +10,10 @@ exec_count = 1
 
 def fetch_TDX_task():
     global exec_count
-    tdx.main()
+    try:
+        tdx.main()
+    except Exception as e:
+        print(e)
     print(f'執行第{exec_count}次 time:{datetime.datetime.now()}')
     exec_count += 1
 
@@ -21,10 +24,7 @@ def setup_schedule():
     # 清除所有現有的排程
     schedule.clear()
     # 設定每x分鐘執行一次的排程
-    try:
-        schedule.every(interval_minutes).minutes.do(fetch_TDX_task)
-    except Exception as e:
-        print(e)
+    schedule.every(interval_minutes).minutes.do(fetch_TDX_task)
 
     # 印出目前的排程狀態來確認設定
     for job in schedule.jobs:
