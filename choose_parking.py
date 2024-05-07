@@ -1,17 +1,14 @@
 
 
-import Mongodb
-from datetime import datetime
-import matplotlib.pyplot as plt
 import numpy as np
-# TODO 以後引用自定義.py要改位置
-# import sys
-# sys.path.insert(1, '../')
+import matplotlib.pyplot as plt
+from datetime import datetime
+import datasource.mongodb as mongodb
 
 
 class Finder():
     def __init__(self) -> None:
-        self.db = Mongodb.obtain_db()
+        self.db = mongodb.obtain_db()
 
     def find(self, query):
         parkCol = self.db['Time_ParkingAvailability']
@@ -19,7 +16,7 @@ class Finder():
 
 
 def main():
-    db = Mongodb.obtain_db()
+    db = mongodb.obtain_db()
     parkCol = db['Time_ParkingAvailability']
 
     # 用第一筆資料的所有停車場取停車場名稱
@@ -32,8 +29,8 @@ def main():
 
     # 條件
     dateFormat = r"%Y-%m-%dT%H:%M:%S%z"
-    date_start = datetime.strftime(datetime(2024, 4, 20, 9), dateFormat)
-    date_end = datetime.strftime(datetime(2024, 4, 20, 20), dateFormat)
+    date_start = datetime.strftime(datetime(2024, 4, 20, 5), dateFormat)
+    date_end = datetime.strftime(datetime(2024, 4, 20, 23, 59), dateFormat)
 
     query = {
         "ParkingAvailabilities": {
@@ -65,10 +62,11 @@ def main():
     # 繪圖顯示中文
     plt.rcParams['font.sans-serif'] = ['Microsoft JhengHei']
     plt.rcParams['axes.unicode_minus'] = False
-    plt.plot(time_arr, availList)
-    plt.legend()
+    lineList = plt.plot(time_arr, availList, '-o', label='星期六')
+    line = lineList[0]
+    plt.legend(handles=[line], loc="center left")
     # 旋轉標籤以節省空間
-    plt.xticks(time_arr[::5], rotation=45)
+    plt.xticks(time_arr[::8], rotation=45)
 
     plt.title(selectPark)
     plt.xlabel('時間')

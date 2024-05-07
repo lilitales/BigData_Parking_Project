@@ -1,4 +1,4 @@
-from data import DataAccess
+from datasource.data import DataAccess
 import json
 
 data = DataAccess()

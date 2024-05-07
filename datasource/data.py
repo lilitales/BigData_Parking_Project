@@ -1,5 +1,5 @@
 
-from auth import Auth
+from datasource.auth import Auth
 import requests
 import json
 import urllib.parse as parse

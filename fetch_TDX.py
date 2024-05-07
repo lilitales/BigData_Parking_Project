@@ -1,7 +1,7 @@
 
 import json
-import Mongodb
-from data import DataAccess
+import datasource.mongodb as mongodb
+from datasource.data import DataAccess
 from datetime import datetime
 
 # 讀入設定檔
@@ -9,7 +9,7 @@ f = open("config.json", "r", encoding="utf-8")
 config = json.load(f)
 f.close()
 
-db = Mongodb.obtain_db()
+db = mongodb.obtain_db()
 data = DataAccess()
 dateFormat = r"%Y-%m-%dT%H:%M:%S%z"
 parkingAvail_collection_name = 'Time_ParkingAvailability'

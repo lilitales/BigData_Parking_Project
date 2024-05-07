@@ -1,6 +1,6 @@
-import Mongodb
-from data import DataAccess
-from auth import Auth
+import datasource.mongodb
+from datasource.data import DataAccess
+from datasource.auth import Auth
 import json
 from datetime import datetime, timedelta
 import requests
