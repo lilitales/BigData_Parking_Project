@@ -181,3 +181,6 @@ secret.json
 
 #log檔資夾
 log
+
+#numpy檔案
+*.npz

@@ -1,8 +1,8 @@
-import datasource.mongodb
+import datasource.mongodb as mongodb
 from datasource.data import DataAccess
 from datasource.auth import Auth
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 import requests
 from pathlib import Path
 
@@ -41,10 +41,6 @@ auth = Auth()
 # p = Path(f'./log/123_errLog.txt')
 # print(p.resolve())
 
-
-# db = Mongodb.obtain_db()
-# park = db['Time_ParkingAvailability']
-
 # # query_date = "2024-04-15"
 # # query = {"UpdateTime": {"$regex": f"^{query_date}"}}
 # query = {
@@ -61,6 +57,25 @@ auth = Auth()
 # print('done')
 
 # 測試日期取時分秒
-dateFormat = r"%Y-%m-%dT%H:%M:%S%z"
-date_test = datetime.strptime("2024-04-20T14:43:01+08:00", dateFormat)
-print(datetime.strftime(date_test, "%H:%M"))
+# dateFormat = r"%Y-%m-%dT%H:%M:%S%z"
+# date_test = datetime.strptime("2024-04-20T14:43:01+08:00", dateFormat)
+# print(datetime.strftime(date_test, "%H:%M"))
+# print(date_test.hour)
+# print(date_test.minute)
+
+# db = mongodb.obtain_db()
+# park = db['Time_ParkingAvailability']
+# res = park.delete_many({"SrcUpdateInterval": {"$eq": -1}})
+# print(res)
+
+# t1 = datetime(2024, 5, 2, 5)
+# t2 = t1.replace(hour=13)
+# print(t2)
+# aWeek = timedelta(days=7)
+# res = t2 + 2*aWeek
+# print(res)
+
+t0 = time(1, 44)
+print(t0)
+res = t0.hour * 60 + t0.minute
+print(res)
