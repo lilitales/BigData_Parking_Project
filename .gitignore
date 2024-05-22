@@ -184,3 +184,6 @@ log
 
 #numpy檔案
 *.npz
+
+#model訓練結果
+*.pkl

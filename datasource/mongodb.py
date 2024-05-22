@@ -18,3 +18,9 @@ def obtain_ParkingAvailability():
     db = obtain_db()
     parkCol = db['Time_ParkingAvailability']
     return parkCol
+
+
+def obtain_Dataset():
+    db = obtain_db()
+    datasetCol = db['Dataset']
+    return datasetCol
