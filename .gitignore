@@ -176,8 +176,8 @@ pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python
 
-#TDX個人資料
-secret.json
+#個人資料
+secret*.json
 
 #log檔資夾
 log
@@ -187,3 +187,6 @@ log
 
 #model訓練結果
 *.pkl
+
+#vscode設定檔
+.vscode

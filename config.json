@@ -1,7 +1,5 @@
 {
-    "topic": "M11202003-bus",
-    "topic-server": "localhost:9092",
+    "db_name": "Parking_Project",
 
-    "connect_db_str": "mongodb://localhost:27017/",
-    "db_name": "Parking_Project"
+    "topic_parkingAvail" : "ParkingAvailability"
 }

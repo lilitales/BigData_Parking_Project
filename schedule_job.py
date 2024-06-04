@@ -4,14 +4,34 @@ import schedule
 import time
 import datetime
 import fetch_TDX as tdx
+import signal
+import sys
 
 exec_count = 1
+producer = None
+
+
+def signal_handler(sig, frame):
+    if producer:
+        producer.close()
+    print("producer closed")
+    sys.exit(0)
+
+
+# 註冊信號處理器，用於處理中斷信號
+signal.signal(signal.SIGINT, signal_handler)
 
 
 def fetch_TDX_task():
     global exec_count
+    global producer
     try:
-        tdx.main()
+        impl = tdx.KafkaImplParkingAvail()
+        impl.produce_parkingAvail()
+        time.sleep(1)
+        impl.consume_parkingAvail()
+
+        producer = impl.get_producer()
     except Exception as e:
         print(e)
     print(f'執行第{exec_count}次 time:{datetime.datetime.now()}')
