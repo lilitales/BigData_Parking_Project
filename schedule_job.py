@@ -18,7 +18,7 @@ def signal_handler(sig, frame):
     sys.exit(0)
 
 
-# 註冊信號處理器，用於處理中斷信號
+# 註冊信號處理器，用於對應程式自行中斷後要釋放相關資源的情況
 signal.signal(signal.SIGINT, signal_handler)
 
 
@@ -38,6 +38,14 @@ def fetch_TDX_task():
     exec_count += 1
 
 
+def reset_realTime_parking_task():
+    try:
+        tdx.reset_realTime_parkingAvail()
+    except Exception as e:
+        print(e)
+    print(f'重設 realTime_parkingAvail, time:{datetime.datetime.now()}')
+
+
 def setup_schedule():
     interval_minutes = 5
 
@@ -45,6 +53,7 @@ def setup_schedule():
     schedule.clear()
     # 設定每x分鐘執行一次的排程
     schedule.every(interval_minutes).minutes.do(fetch_TDX_task)
+    schedule.every(6).minutes.do(reset_realTime_parking_task)
 
     # 印出目前的排程狀態來確認設定
     for job in schedule.jobs:

@@ -12,6 +12,7 @@ db = mongodb.obtain_db()
 data = DataAccess()
 dateFormat = r"%Y-%m-%dT%H:%M:%S%z"
 parkingAvail_collection_name = 'Time_ParkingAvailability'
+realTime_parkingAvail_collection_name = 'RealTime_ParkingAvailability'
 
 
 def insert_parkingAvail(parkInfo):
@@ -22,9 +23,27 @@ def insert_parkingAvail(parkInfo):
     col.insert_one(parkInfo)
 
 
-def fetch_parkingAvail():
+def deal_parkingAvail():
+    """
+    取剩餘車位,處理,存入DB流程
+    """
     parkInfo = data.get_parkingAvail(city)
     insert_parkingAvail(parkInfo)
+
+
+def reset_realTime_parkingAvail():
+    """
+    最新剩餘車位更新
+    """
+    col = db[parkingAvail_collection_name]
+    # -1 :大到小排序
+    cursor = col.find().sort({'_id': -1}).limit(1)
+    latest_parkInfo = list(cursor)[0]
+
+    insert_col = db[realTime_parkingAvail_collection_name]
+    # 舊有清空
+    insert_col.delete_many({})
+    insert_col.insert_one(latest_parkInfo)
 
 
 class KafkaImplParkingAvail():
@@ -85,9 +104,12 @@ class KafkaImplParkingAvail():
 
 
 if __name__ == '__main__':
+    # kafka版本
     impl = KafkaImplParkingAvail()
     impl.produce_parkingAvail()
     time.sleep(1)
     print('producer done')
     impl.consume_parkingAvail()
     print('consumer done')
+
+    # reset_realTime_parkingAvail()
